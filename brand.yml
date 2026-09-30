@@ -1,0 +1,15 @@
+color:
+  palette:
+    cocktail-teal: "#264653"
+    cocktail-teal-light: "#287D78"
+    cocktail-gold: "#B8860B"
+    cocktail-coral: "#C94C35"
+    cocktail-cream: "#F7F3E9"
+    cocktail-dark: "#333333"
+
+  background: cocktail-cream
+  foreground: cocktail-dark
+  primary: cocktail-teal
+  secondary: cocktail-teal-light
+  tertiary: cocktail-gold
+  accent: cocktail-coral

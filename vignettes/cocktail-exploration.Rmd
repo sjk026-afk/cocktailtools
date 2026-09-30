@@ -1,0 +1,80 @@
+---
+title: "cocktail-exploration"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{cocktail-exploration}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(cocktailtools)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+cocktails %>%
+  filter(category == "Cocktail") %>%
+  select(drink, ingredient, measure) %>%
+  head(10)
+```
+
+```{r}
+ingredient_counts <- cocktails %>%
+  group_by(ingredient) %>%
+  summarise(
+    number_of_cocktails = n_distinct(drink),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(number_of_cocktails))
+
+head(ingredient_counts, 10)
+```
+```{r}
+ingredient_counts %>%
+  arrange(desc(number_of_cocktails)) %>%
+  head(10)
+```
+```{r}
+cocktails %>%
+  mutate(
+    has_measure = !is.na(measure)
+  ) %>%
+  select(drink, ingredient, measure, has_measure) %>%
+  head(10)
+```
+```{r}
+ingredient_counts <- cocktails %>%
+  group_by(ingredient) %>%
+  summarise(
+    number_of_cocktails = n_distinct(drink),
+    .groups = "drop"
+  )
+
+cocktails %>%
+  left_join(ingredient_counts, by = "ingredient") %>%
+  select(drink, ingredient, number_of_cocktails) %>%
+  head(10)
+```
+```{r}
+cocktails %>%
+  count(category, sort = TRUE) %>%
+  ggplot(aes(x = reorder(category, n), y = n)) +
+  geom_col(fill = "#264653") +
+  coord_flip() +
+  labs(
+    title = "Cocktails by Category",
+    x = "Category",
+    y = "Number of Rows"
+  ) +
+  theme_cocktail()
+```
+
